@@ -10,7 +10,7 @@ def bubble_sort(array: list[int]):
     print(array)
     n = len(array)
     for i in range(0,n-1):
-        for j in range(0,n-1-i):
+        for j in range(0,n-1-i): 
             if array[j] > array[j+1]:
                 temp = array[j]
                 array[j] = array[j+1]
