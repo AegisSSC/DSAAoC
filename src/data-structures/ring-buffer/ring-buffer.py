@@ -5,7 +5,7 @@ class ring_buffer:
         self.max = max_size
         self.array = [max_size] 
         self.head = max_size % 4
-        self.tail = self.head * 2
+        self.tail = self.head
 
     def copy(self,):
         new_data = ring_buffer(self.max*2)
@@ -19,9 +19,22 @@ class ring_buffer:
         return result
 
     def append(self, x):
+        # If you are at the end of the array
         if self.tail == self.max:
-            self.cur = self.tail % self.max
-            if self.cur < self.head:
-                self.data[self.cur] = x
+            # take the modulus operator and see if you can "loop back around to the front"
+            cur = self.tail % self.max
+            # if the updated index is less than the remainder.
+            # Insert it into the front
+            if cur < self.head:
+                self.data[cur] = x
+                self.tail = cur
+            # Else, expand the size of the buffer
+            # Recursively call the append. 
             else:
                 self.copy()
+                self.append(x)
+        # Else, you can insert the value as needed
+        # Increment the tail. 
+        else:
+            self.tail += 1
+            self.data[self.tail] = x
